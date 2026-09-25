@@ -15,3 +15,15 @@ GitHub Pages：在 repository Settings → Pages 選擇 **Deploy from a branch**
 - 匯入上限為 5 份檔案，每份 5 MB。原型以「一列代表一個月份或一筆營收」的工作表為主；合併儲存格、跨欄表頭、混合幣別及複雜公式需人工檢查。
 - 重複月份保留原始多筆資料，不自動加總；單位不明時不換算金額。缺月僅在單一工作表可解析的最早與最晚月份之間檢查。
 - 所有示範企業與數字均屬虛構，不能用於實際授信決策。正式試辦須另行完成資料授權與資安審查。
+
+## 後端 API 與部署
+
+`api/normalize.js` 是同站 Serverless API，提供：
+
+- `GET /api/normalize`：健康檢查與模式偵測。
+- `POST /api/normalize`，`action: "ingest"`：接收 Base64 Excel，回傳可核對的工作表與欄名候選。
+- `POST /api/normalize`，`action: "analyze"`：收到確認後的工作表欄位對應，回傳換算資料與缺漏清單。
+
+將整個 GitHub repository 匯入 Vercel，框架選 **Other**，根目錄保持 `./`，由 `vercel.json` 與 `package.json` 建置；同站前端會自動偵測並串接 API。Vercel 網址可直接使用完整前後端。**GitHub Pages 只提供靜態前端**，會自動切換為瀏覽器本機處理模式；它無法執行 API。後端模式單檔上限 3 MB，避免 Serverless 請求大小限制；不應上傳真實企業資料至此展示版。
+
+API 不寫入資料庫、檔案系統或第三方分析服務。正式上線仍需驗證身分、權限、資料保護、稽核及更嚴格的檔案檢查；目前僅供虛構資料展示。

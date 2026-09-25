@@ -1,0 +1,9 @@
+{
+  "name": "pengwin-revenue-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Browser and serverless demo for monthly revenue normalization",
+  "scripts": {"test": "node --test"},
+  "dependencies": {"xlsx": "0.18.5"},
+  "engines": {"node": ">=20"}
+}
